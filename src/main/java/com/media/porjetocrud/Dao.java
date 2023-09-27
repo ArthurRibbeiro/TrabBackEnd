@@ -19,10 +19,10 @@ import com.media.porjetocrud.models.Veiculo;
  */
 public class Dao {
     public static void main(String[] args) throws SQLException {
-        System.out.println(resgatarVeiculos());
+        //System.out.println(resgatarVeiculos());
         //atualizaVeiculo();
-        removeVeiculo(2);
-        System.out.println(resgatarVeiculos());
+        //removeVeiculo(2);
+        //System.out.println(resgatarVeiculos());
 
         
     }
@@ -38,13 +38,13 @@ public class Dao {
             Connection conexao = DriverManager.getConnection(""
                     + "jdbc:mariadb://localhost:3306/basedados?useTimezone=true&serverTimezone=UTC&useBulkStmts=false", 
                     "root", "secret");    
-            System.out.println("Conectado!!!");
+            System.out.println("Conectado com sucesso");
 
             return conexao;
 
             
         }catch(Exception e){
-            System.out.println("Desconectado!!!");
+            System.out.println("Falha na conexão");
             return null;
         }
     
@@ -70,7 +70,7 @@ public class Dao {
             conexao.commit();
     }
 
-    public static ArrayList<Veiculo> resgatarVeiculos() throws SQLException{
+    public static ArrayList<Veiculo> resgatarVeiculos(int contador) throws SQLException{
         Connection conexao = conectar();
 
             String resgatar = "SELECT * FROM veiculo";
@@ -90,6 +90,7 @@ public class Dao {
                     String cor = rs.getString(6);
                     int idProprietario = rs.getInt(7);
                     int idVaga = rs.getInt(8);
+                    contador = rs.getInt(1) + 1;
 
                     Veiculo veiculo = new Veiculo(id, marca, modelo, ano, placa, cor, idProprietario, idVaga);
                     veiculos.add(veiculo);

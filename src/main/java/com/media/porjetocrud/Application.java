@@ -1,10 +1,6 @@
 package com.media.porjetocrud;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -22,7 +18,7 @@ public class Application {
     static int contador = 0;
 
     public static void main(String[] args) throws InterruptedException, IOException, SQLException {
-        veiculos = Dao.resgatarVeiculos();
+        veiculos = Dao.resgatarVeiculos(contador);
         int opcao;
         do{
             opcao = menuPrincipal();
@@ -47,16 +43,16 @@ public class Application {
     }
 
     private static void exibeVeiculos() {
-        System.out.println("-----------------------------------------");
+        System.out.println("---------------------------------------------|| Lista de veículos ||---------------------------------------------");
         if (veiculos.isEmpty()){
             System.out.println("Não há veículos para exibir");
             System.out.println("Cadastre novos veículos e eles aparecerão aqui");
         }else{
             for (Veiculo veiculo : veiculos) {
-                System.out.println(veiculo.toString());
+                System.out.println("\n" + veiculo.toString());
             }
         }
-        System.out.println("-----------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------");
     }
 
     public static void funcoes(int opcao) throws InterruptedException, IOException, SQLException{
@@ -73,7 +69,7 @@ public class Application {
             String modelo = scan.nextLine();
 
             System.out.println("Informe o ano do veículo:");
-            int ano = Integer.parseInt(scan.nextLine());
+            int ano = pegaInteiro();
 
             System.out.println("Informe a placa");
             String placa = scan.nextLine();
@@ -82,18 +78,29 @@ public class Application {
             String cor = scan.nextLine();
 
             System.out.println("Informe o id do proprietário");
-            int IdProprietario = Integer.parseInt(scan.nextLine());
+            int IdProprietario = pegaInteiro();
 
             System.out.println("Informe o id da vaga");
-            int IdVaga = Integer.parseInt(scan.nextLine());
+            int IdVaga = pegaInteiro();
+            
+            try {
+                Dao.inserirVeiculo(marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
+                Veiculo carro = new Veiculo(contador, marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
+                contador++;
+                veiculos.add(carro);
 
-            Veiculo carro = new Veiculo(contador, marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
-            Dao.inserirVeiculo(marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
-            contador++;
 
-            System.out.println();
+                
+            } catch (Exception e) {
+                // TODO: handle exception
+                System.out.println("Houve um erro na inserção do registro");
+                System.out.println(e);
+                System.out.println("Tente novamente");
+                System.out.println("Pressione enter para continuar");
+                scan.nextLine();
+            }
+                
 
-            veiculos.add(carro);
 
             break;
             //Editar veiculo
@@ -101,13 +108,15 @@ public class Application {
             if (veiculos.isEmpty()) {
                 System.out.println("Não há veículos para alterar");
                 System.out.println("Cadastre veículos para poder utilizar esta função");
+                System.out.println("Pressione enter para voltar");
+                scan.nextLine();
 
                 
             }else{
                 exibeVeiculos();
 
                 System.out.println("Informe o id do veículo que deseja editar");
-                int selecionaIdCarro = Integer.parseInt(scan.nextLine());
+                int selecionaIdCarro = pegaInteiro();
 
                 Veiculo manipulaCarro = null;
 
@@ -207,13 +216,15 @@ public class Application {
             if (veiculos.isEmpty()) {
                 System.out.println("Não há veículos para excluir");
                 System.out.println("Cadastre veículos para poder utilizar esta função");
+                System.out.println("Pressione enter para voltar");
+                scan.nextLine();
 
                 
             }else{
                 exibeVeiculos();
 
                 System.out.println("Informe o id do veículo que deseja excluir");
-                int selecionaIdCarro = Integer.parseInt(scan.nextLine());
+                int selecionaIdCarro = pegaInteiro();
 
                 LimpaConsole.limpar();
 
@@ -266,6 +277,29 @@ public class Application {
     }while (!valido);
 
     return intOpcao;
+
+}
+
+public static int pegaInteiro(){
+        /*if (opcao.equals("")){
+            System.out.println("Informe um valor");
+        }*/
+        
+        boolean valido = false;
+        int inteiro = 0;
+        
+        do{
+            String entrada = scan.nextLine();
+            try{
+                inteiro = Integer.parseInt(entrada);
+                valido = true;
+
+            }catch(Exception e) {
+                System.out.println("Informe um número válido");
+            }
+        }while (!valido);
+
+    return inteiro;
 
 }
 }
