@@ -18,10 +18,11 @@ import com.media.porjetocrud.models.Veiculo;
  */
 public class Application {
     static Scanner scan = new Scanner(System.in);
-    static ArrayList<Veiculo> veiculos = new ArrayList<Veiculo>();
+    static ArrayList<Veiculo> veiculos;
     static int contador = 0;
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, SQLException {
+        veiculos = Dao.resgatarVeiculos();
         int opcao;
         do{
             opcao = menuPrincipal();
@@ -40,7 +41,7 @@ public class Application {
                 3 - Excluir veículo cadastrado
                 0 - Sair
                 """);
-        int opcao = Integer.parseInt(scan.nextLine());
+        int opcao = pegaOpcao(0,3);
 
         return opcao;
     }
@@ -58,9 +59,10 @@ public class Application {
         System.out.println("-----------------------------------------");
     }
 
-    public static void funcoes(int opcao) throws InterruptedException, IOException{
+    public static void funcoes(int opcao) throws InterruptedException, IOException, SQLException{
         LimpaConsole.limpar();
         switch (opcao) {
+            //Cadastrar novo veiculo
             case 1:
             System.out.println("Cadastro de novo veículo");
 
@@ -86,6 +88,7 @@ public class Application {
             int IdVaga = Integer.parseInt(scan.nextLine());
 
             Veiculo carro = new Veiculo(contador, marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
+            Dao.inserirVeiculo(marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
             contador++;
 
             System.out.println();
@@ -93,6 +96,7 @@ public class Application {
             veiculos.add(carro);
 
             break;
+            //Editar veiculo
             case 2:
             if (veiculos.isEmpty()) {
                 System.out.println("Não há veículos para alterar");
@@ -109,9 +113,10 @@ public class Application {
 
             boolean find = false;
             for (Veiculo veiculo : veiculos) {
-                    if (veiculo.getId() == selecionaIdCarro)
+                    if (veiculo.getId() == selecionaIdCarro){
                     find = true;         
                     manipulaCarro = veiculo;        
+                    }
 
                 }
                 if (!find){
@@ -134,41 +139,50 @@ public class Application {
 
                     """);
 
-            int alteracao = Integer.parseInt(scan.nextLine()); 
+            int alteracao = pegaOpcao(1, 7);
 
             System.out.println("Informe o novo valor");
             String novoValor = scan.nextLine();
+
+            String opcao1 = "null";
             
 
             switch (alteracao) {
                 case 1:
+                    opcao1 = "marca";
                     manipulaCarro.setMarca(novoValor);
 
                     break;
 
                 case 2:
+                opcao1 = "modelo";
                 manipulaCarro.setModelo(novoValor);
                 
                     break;
                 case 3:
+                opcao1 = "ano";
                 manipulaCarro.setAno(Integer.parseInt(novoValor));
                 
                     break;
                 case 4:
+                opcao1 = "placa";
                 manipulaCarro.setPlaca(novoValor);
                 
                     break;
                 case 5:
+                opcao1 = "cor";
                 manipulaCarro.setCor(novoValor);
                 
                     break;
 
                     case 6:
+                    opcao1 = "id_proprietario";
                 manipulaCarro.setIdProprietario(Integer.parseInt(novoValor));
                 
                     break;
 
                     case 7:
+                    opcao1 = "id_vaga";
                 manipulaCarro.setIdVaga(Integer.parseInt(novoValor));
                 
                     break;
@@ -177,9 +191,17 @@ public class Application {
                 System.out.println("Selecione uma opção válida");
                     break;
             }
+
+            if(alteracao > 0 && alteracao <= 7){
+
+            if (alteracao != 3 && alteracao!= 6 && alteracao != 7){
+                Dao.atualizaVeiculo(opcao1, novoValor, selecionaIdCarro);
+            }else{
+                Dao.atualizaVeiculo(opcao1, Integer.parseInt(novoValor), selecionaIdCarro);
             }
-                
-            
+        }
+            }
+
                 break;
             case 3:
             if (veiculos.isEmpty()) {
@@ -198,6 +220,7 @@ public class Application {
                 System.out.println("Tem certeza? o registro será excluido pra sempre (Bastante tempo)");
                 System.out.println("1 - Sim/0 - Não");
                 if (scan.nextLine().equals("1")){
+                    Dao.removeVeiculo(selecionaIdCarro);
                     for (Veiculo veiculo : veiculos) {
                         if (veiculo.getId() == selecionaIdCarro){
                             veiculos.remove(veiculo);
@@ -218,4 +241,33 @@ public class Application {
                 break;
         }
     }
+
+    public static int pegaOpcao(int min, int max){
+        /*if (opcao.equals("")){
+            System.out.println("Informe um valor");
+        }*/
+        
+        boolean valido = false;
+        int intOpcao = 0;
+        
+        do{
+            String opcao = scan.nextLine();
+            try{
+        intOpcao = Integer.parseInt(opcao);
+        if (intOpcao < min || intOpcao > max){
+            System.out.println("Informe uma opção válida");
+        }else{
+            valido = true;
+        }
+
+    }catch(Exception e) {
+        System.out.println("Informe uma opção válida");
+    }
+    }while (!valido);
+
+    return intOpcao;
+
 }
+}
+
+

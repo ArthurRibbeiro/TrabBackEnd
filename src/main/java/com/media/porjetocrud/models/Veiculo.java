@@ -13,10 +13,10 @@ public class Veiculo {
     private String marca;
     private String modelo;
     private int ano;
-    String placa;
-    String cor;
-    int idProprietario;
-    int idVaga;
+    private String placa;
+    private String cor;
+    private int idProprietario;
+    private int idVaga;
 
     public Veiculo(int id, String marca, String modelo, int ano, String placa, String cor, int idProprietario, int idVaga) {
         this.id = id;
