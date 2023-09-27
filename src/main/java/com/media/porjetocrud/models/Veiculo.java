@@ -15,18 +15,18 @@ public class Veiculo {
     private int ano;
     String placa;
     String cor;
-    int IdProprietario;
-    int IdVaga;
+    int idProprietario;
+    int idVaga;
 
-    public Veiculo(int id, String marca, String modelo, int ano, String placa, String cor, int IdProprietario, int IdVaga) {
+    public Veiculo(int id, String marca, String modelo, int ano, String placa, String cor, int idProprietario, int idVaga) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
         this.placa = placa;
         this.cor = cor;
-        this.IdProprietario = IdProprietario;
-        this.IdVaga = IdVaga;
+        this.idProprietario = idProprietario;
+        this.idVaga = idVaga;
     }
 
     public int getId() {
@@ -78,25 +78,25 @@ public class Veiculo {
     }
 
     public int getIdProprietario() {
-        return IdProprietario;
+        return idProprietario;
     }
 
-    public void setIdProprietario(int IdProprietario) {
-        this.IdProprietario = IdProprietario;
+    public void setIdProprietario(int idProprietario) {
+        this.idProprietario = idProprietario;
     }
 
     public int getIdVaga() {
-        return IdVaga;
+        return idVaga;
     }
 
-    public void setIdVaga(int IdVaga) {
-        this.IdVaga = IdVaga;
+    public void setIdVaga(int idVaga) {
+        this.idVaga = idVaga;
     }
 
     @Override
     public String toString() {
         return "Veiculo [id=" + id + ", marca=" + marca + ", modelo=" + modelo + ", ano=" + ano + ", placa=" + placa
-                + ", cor=" + cor + ", IdProprietario=" + IdProprietario + ", IdVaga=" + IdVaga + "]";
+                + ", cor=" + cor + ", IdProprietario=" + idProprietario + ", IdVaga=" + idVaga + "]";
     }
     
 }

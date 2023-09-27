@@ -177,7 +177,6 @@ public class Application {
                 System.out.println("Selecione uma opção válida");
                     break;
             }
-            
             }
                 
             
@@ -204,8 +203,6 @@ public class Application {
                             veiculos.remove(veiculo);
                             break;
                         }
-
-                        
                     }
                 }
             }
