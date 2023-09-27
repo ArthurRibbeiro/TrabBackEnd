@@ -79,16 +79,19 @@ public class Application {
             System.out.println("Informe a cor");
             String cor = scan.nextLine();
 
-            Veiculo carro = new Veiculo(contador, marca, modelo, ano, placa, cor);
+            System.out.println("Informe o id do proprietário");
+            int IdProprietario = Integer.parseInt(scan.nextLine());
+
+            System.out.println("Informe o id da vaga");
+            int IdVaga = Integer.parseInt(scan.nextLine());
+
+            Veiculo carro = new Veiculo(contador, marca, modelo, ano, placa, cor, IdProprietario, IdVaga);
             contador++;
 
             System.out.println();
 
             veiculos.add(carro);
 
-
-
-            
             break;
             case 2:
             if (veiculos.isEmpty()) {
@@ -126,6 +129,8 @@ public class Application {
                 3 - ano
                 4 - placa
                 5 - cor
+                6 - ID do Proprietário
+                7 - ID da vaga
 
                     """);
 
@@ -155,6 +160,16 @@ public class Application {
                     break;
                 case 5:
                 manipulaCarro.setCor(novoValor);
+                
+                    break;
+
+                    case 6:
+                manipulaCarro.setIdProprietario(Integer.parseInt(novoValor));
+                
+                    break;
+
+                    case 7:
+                manipulaCarro.setIdVaga(Integer.parseInt(novoValor));
                 
                     break;
             

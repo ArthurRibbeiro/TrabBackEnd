@@ -18,15 +18,15 @@ public class Veiculo {
     int IdProprietario;
     int IdVaga;
 
-    public Veiculo(int id, String marca, String modelo, int ano, String placa, String cor/*, int IdProprietario, int IdVaga*/) {
+    public Veiculo(int id, String marca, String modelo, int ano, String placa, String cor, int IdProprietario, int IdVaga) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
         this.placa = placa;
         this.cor = cor;
-        /*this.IdProprietario = IdProprietario;
-        this.IdVaga = IdVaga;*/
+        this.IdProprietario = IdProprietario;
+        this.IdVaga = IdVaga;
     }
 
     public int getId() {
